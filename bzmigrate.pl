@@ -28,7 +28,7 @@ foreach my $bug (@bugs)
 #    die "dead.";
 }
 
-die "ending."
+die "Submitting the parsed input is not yet done.";
 
 print("login: ");
 #my $login = ReadLine(0);
