@@ -4,6 +4,8 @@ use strict;
 use Term::ReadKey;
 use XML::Simple;
 use Data::Dumper;
+use List::MoreUtils qw/ uniq /;
+use JSON;
 
 my $bzmigrate_url = "http://goo.gl/IYYut";
 my $xml_filename  = "bugzilla.xml";
@@ -28,6 +30,8 @@ my $root_xml = $xml->XMLin($xml_filename,
 my @bugs = @{$root_xml->{'bug'}};
 #print Dumper(@bugs);
 
+my @statuses;
+
 foreach my $bug (@bugs)
 {
 #    print Dumper($bug);
@@ -35,7 +39,9 @@ foreach my $bug (@bugs)
     my $id = $bug->{'bug_id'};
     my $title = $bug->{'short_desc'};
     my $status = $bug->{'bug_status'};
-    my $preface = "* Migrated from Bugzilla by BugzillaMigrate ($bzmigrate_url)\n";
+    my $preface = "* Migrated from Bugzilla by BugzillaMigrate ($bzmigrate_url)\n\n";
+
+    push(@statuses, $status);
 
     # each bug has a list of long_desc for the original description
     # and each comment thereafter
@@ -51,7 +57,7 @@ foreach my $bug (@bugs)
 	    $body .= " nothing.\n";
 	    next;
 	}
-	$body .= ":\n";
+	$body .= ":\n\n";
 
 	# do the body of the comment
 	my $pretty_text = $desc->{'thetext'};
@@ -67,6 +73,9 @@ foreach my $bug (@bugs)
     print $body;
 #    die "dead.";
 }
+
+@statuses = uniq @statuses;
+print (@statuses);
 
 die "Submitting the parsed input is not yet done.";
 
