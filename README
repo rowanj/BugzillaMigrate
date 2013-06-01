@@ -1,9 +1,18 @@
 BugzillaMigrate
 ===============
 
-bzmigrate.pl is a Perl program to parse the XML output of Bugzilla (2.22 onward?) into structures suitable for programmatic upload to a new bug tracker; initally targeting GitHub Issues (2+)
+bzmigrate.pl is a Perl program to parse the XML output of Bugzilla
+(2.22 onward?) into structures suitable for programmatic upload to a new bug
+tracker; initally targeting GitHub Issues (v3).
 
-You can create an XML dump from Bugzilla by searching for the appropriate bugs, and hitting the XML button at the bottom of the page - the output from which will contain the full specification of all bugs shown.
+You can create an XML dump from Bugzilla by searching for the appropriate bugs,
+and hitting the XML button at the bottom of the page - the output from which
+will contain the full specification of all bugs shown.
 
-The script currently expects the output of this dump to be saved in the current directory (i.e. that which you are running the script from) by the name:
-    bugzilla.xml
+The script inputs values from environment variables and/or command line options.
+If run with -i option, it can also prompt for the values interactively.
+
+Note that Github Issues API does not currently allow attaching files
+programatically so the script at least prints its IDs and filenames.
+
+The script assumes that the repo has labels "bug" and "enhancement".
